@@ -12,13 +12,24 @@ public class Forma extends JFrame {
     private JButton loadBtn;
     private JButton saveBtn;
     private JSlider debljinaSld;
+    private PaintBrush p;
 
-    public Forma(String title, PaintBrush p) {
+    public PaintBrush getP() {
+        return p;
+    }
+
+    public void setP(PaintBrush p) {
+        this.p = p;
+    }
+
+    public Forma(String title) {
         super(title);
 
         this.setContentPane(Panel);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
+
+
 
         krugBtn.addMouseListener(new MouseAdapter() {
             @Override
