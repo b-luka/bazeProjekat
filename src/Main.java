@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Main extends PApplet {
-    private static PaintBrush brush;
-    private static Forma forma;
+    private static PaintBrushNov brush;
+    private static FormaNova forma;
+
+    private static int lineXB, lineYB, lineXE, lineYE;
 
     public static void main(String[] args) {
-        brush = new PaintBrush();
-        forma = new Forma("title");
-        brush = new PaintBrush(forma);
-        forma.setP(brush);
+        brush = new PaintBrushNov();
+        forma = new FormaNova("gui", brush);
         forma.setVisible(true);
         PApplet.main("Main", args);
 
@@ -58,6 +58,7 @@ public class Main extends PApplet {
     }
 
     public void setup() {
+        forma.setApplet(this);
         background(255);
         frameRate(120);
 
@@ -76,20 +77,34 @@ public class Main extends PApplet {
         switch (brush.getMod()) {
             case 1:
                 ellipseMode(CENTER);
-                fill(0);
+                noStroke();
+                fill(color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]));
                 ellipse(mouseX, mouseY, forma.Slider(), forma.Slider());
+                strokeWeight(1);
                 break;
             case 2:
                 rectMode(CENTER);
-                fill(0);
+                noStroke();
+                fill(color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]));
                 rect(mouseX, mouseY, forma.Slider(), forma.Slider());
-
+                strokeWeight(1);
                 break;
             case 3:
-                
+                lineXB = mouseX;
+                lineYB = mouseY;
                 break;
             case 4:
-                bucketFill(get(mouseX, mouseY), color(128), mouseX, mouseY);
+                int fillColor = color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]);
+                if (fillColor != get(mouseX, mouseY)) {
+                    bucketFill(get(mouseX, mouseY), fillColor, mouseX, mouseY);
+                }
+                break;
+            case 5:
+                rectMode(CENTER);
+                noStroke();
+                fill(color(255, 255, 255));
+                rect(mouseX, mouseY, forma.Slider(), forma.Slider());
+                strokeWeight(1);
                 break;
         }
     }
@@ -99,14 +114,40 @@ public class Main extends PApplet {
         switch (brush.getMod()) {
             case 1:
                 ellipseMode(CENTER);
-                fill(0);
+                noStroke();
+                fill(color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]));
                 ellipse(mouseX, mouseY, forma.Slider(), forma.Slider());
+                strokeWeight(1);
                 break;
             case 2:
                 rectMode(CENTER);
-                fill(0);
+                noStroke();
+                fill(color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]));
                 rect(mouseX, mouseY, forma.Slider(), forma.Slider());
+                strokeWeight(1);
+                break;
+            case 3:
+                lineXE = mouseX;
+                lineYE = mouseY;
+                break;
+            case 5:
+                rectMode(CENTER);
+                noStroke();
+                fill(color(255, 255, 255));
+                rect(mouseX, mouseY, forma.Slider(), forma.Slider());
+                strokeWeight(1);
+                break;
+        }
+    }
 
+    @Override
+    public void mouseReleased() {
+        switch (brush.getMod()) {
+            case 3:
+                stroke(color(brush.getColor()[0], brush.getColor()[1], brush.getColor()[2], brush.getColor()[3] == 100 ? 255 : brush.getColor()[3]));
+                strokeWeight(forma.Slider());
+                line(lineXB, lineYB, lineXE, lineYE);
+                strokeWeight(1);
                 break;
         }
     }
